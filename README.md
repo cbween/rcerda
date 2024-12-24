@@ -1,40 +1,50 @@
 # CbweenEdrAgent
 
-TODO: Delete this and the text below, and describe your gem
+Welcome to the EDR Agent Tester, it's purpose is to generate vairous telemetry and enabling the testing of an edr agent.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/cbween_edr_agent`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 ## Installation
-
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
 
 Install the gem and add to the application's Gemfile by executing:
 
 ```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
-```
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
-```
-
-## Usage
-
+bin/setup
 chmod +x bin/cbween_edr_agent
+```
+
+Or run
+```bash
+bundle install
+chmod +x bin/cbween_edr_agent
+```
 
 ### Use the process agent
+To get a list of commands for the process agent run:
+```bash
+bin/cbween_edr_agent process -h"
+```
+  - -n NAME, name of the process to run
+  - -a ARGUMENTS, arguments to pass onto the process
+
+e.g.
+```bash
 bin/cbween_edr_agent process -n ls -a "-alh"
-  -n NAME, name of the process to run
-  -a ARGUMENTS, arguments to pass onto the process
+```
 
 ### Use the file agent
+```bash
 bin/cbween_edr_agent file -a [create|modify|delete] -n foo -p tmp -t txt
-  -a ACTION, the action to preform with a file.
-  -n NAME, the name of a file
-  -p PATH, the path to a file
-  -t TYPE, the mime-type of a file
+```
+
+To get a list of commands for the file agent run:
+```bash
+bin/cbween_edr_agent file -h"
+```
+
+  - -a ACTION, the action to preform with a file.
+  - -n NAME, the name of a file
+  - -p PATH, the path to a file
+  - -t TYPE, the mime-type of a file
 
 TODO: Write usage instructions here for network agent
 
