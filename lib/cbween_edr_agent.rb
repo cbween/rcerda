@@ -25,6 +25,7 @@ module CbweenEdrAgent
         end
       else
         @options = options do |opts|
+          # TODO Can use Trailing?
           opts.on('-h', 'Show this help') { raise EdrAgentFailure, opts.to_s }
           # TODO: Provide Help
         end
