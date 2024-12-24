@@ -15,7 +15,7 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
 
   def run
     logger.info "Initialize #{log_name}", log_payload
-    logger.measure_debug("Completed #{log_name}", log_payload) do
+    logger.measure_info(message: "Completed #{log_name}") do
       # TODO: Raise error if action not in list of ACTIONS
       # TODO: Validate inputs
       self.send @action
