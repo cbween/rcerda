@@ -22,7 +22,21 @@ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 
 ## Usage
 
-TODO: Write usage instructions here
+chmod +x bin/cbween_edr_agent
+
+### Use the process agent
+bin/cbween_edr_agent process -n ls -a "-alh"
+  -n NAME, name of the process to run
+  -a ARGUMENTS, arguments to pass onto the process
+
+### Use the file agent
+bin/cbween_edr_agent file -a [create|modify|delete] -n foo -p tmp -t txt
+  -a ACTION, the action to preform with a file.
+  -n NAME, the name of a file
+  -p PATH, the path to a file
+  -t TYPE, the mime-type of a file
+
+TODO: Write usage instructions here for network agent
 
 ## Development
 
