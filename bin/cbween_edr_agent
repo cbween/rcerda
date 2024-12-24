@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "cbween_edr_agent"
+require 'semantic_logger'
+
+SemanticLogger.default_level = :debug # TODO: ENV Vars
+SemanticLogger.add_appender(io: $stdout, formatter: :json)
+SemanticLogger.add_appender(file_name: "output.log", formatter: :json)
+
+begin
+  CbweenEdrAgent::EdrAgent.run
+rescue CbweenEdrAgent::EdrAgent::EdrAgentFailure => e
+  # TODO: ensure good logging formats are enfored here
+  STDERR.puts e.message
+  STDERR.puts e.options if e.options
+  exit(1)
+end
