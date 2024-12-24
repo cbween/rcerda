@@ -15,15 +15,9 @@ class CbweenEdrAgent::ProcessAgent < CbweenEdrAgent::EdrAgent
       pid = Process.spawn "#{@name} #{@process_args}"
       Process.waitpid(pid)
     end
-
-    log_completed
   rescue => e
     logger.error "Failed #{log_name}", error_message: e.message
     raise EdrAgentFailure.new(e.message)
-  end
-
-  def log_completed
-    logger.info "Completed #{log_name}", log_payload
   end
 
   def log_name
