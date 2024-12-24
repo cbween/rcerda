@@ -11,7 +11,7 @@ class CbweenEdrAgent::ProcessAgent < CbweenEdrAgent::EdrAgent
 
   def run
     logger.info "Initialize #{log_name}", log_payload
-    logger.measure_debug("Completed #{log_name}", log_payload) do
+    logger.measure_info("Completed #{log_name}", log_payload) do
       pid = Process.spawn "#{@name} #{@process_args}"
       Process.waitpid(pid)
     end

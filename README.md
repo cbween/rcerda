@@ -21,7 +21,7 @@ chmod +x bin/cbween_edr_agent
 ### Use the process agent
 To get a list of commands for the process agent run:
 ```bash
-bin/cbween_edr_agent process -h"
+bin/cbween_edr_agent process -h
 ```
   - -n NAME, name of the process to run
   - -a ARGUMENTS, arguments to pass onto the process
@@ -38,7 +38,7 @@ bin/cbween_edr_agent file -a [create|modify|delete] -n foo -p tmp -t txt
 
 To get a list of commands for the file agent run:
 ```bash
-bin/cbween_edr_agent file -h"
+bin/cbween_edr_agent file -h
 ```
 
   - -a ACTION, the action to preform with a file.
