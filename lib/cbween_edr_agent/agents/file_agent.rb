@@ -5,7 +5,7 @@ require "fileutils"
 class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
   ACTIONS = %w(create modify delete)
 
-  attr_reader :action, :name, :path, :type, :jail
+  attr_reader :action, :name, :type
 
   def self.command; 'file'; end
 
@@ -15,7 +15,7 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
 
   def run
     logger.info "Initialize #{log_name}", log_payload
-    logger.measure_info(message: "Completed #{log_name}") do
+    logger.measure_info(message: "Completed #{log_name}", payload: log_payload) do
       # TODO: Raise error if action not in list of ACTIONS
       # TODO: Validate inputs
       self.send @action
@@ -56,7 +56,7 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
   end
 
   def file_uri
-     file_uri = "#{path}/#{name}.#{type}"
+    "#{path}/#{name}.#{type}"
   end
 
   def jail
@@ -68,11 +68,11 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
   end
 
   def options
-    OptionParser.new("Usage: #{$0} #{self.class.command} [ OPTIONS] 'application name'") do |parser|
+    OptionParser.new("Usage: #{$0} #{self.class.command} [ OPTIONS]") do |parser|
       parser.on('-a', '--action=ACTION', String, 'The action to take on a file.')   { |x| @action = x }
       parser.on('-n', '--name=NAME', String, 'The name of a existing or new file.') { |x| @name = x }
-      parser.on('-p', '--path=PATH', String, 'The path of a existing or new file.') { |x| @path = "#{jail}/#{x}" }
-      parser.on('-t', '--type=TYPE', String, 'The type of a new file to create.')   { |x| @type = x.gsub(".", "") }
+      parser.on('-p', '--path=PATH', String, 'The path of a existing or new file.') { |x| @path = "#{x}" } # Should probably enforce the jail.
+      parser.on('-t', '--type=TYPE', String, 'The type of a new file to create. e.g. [txt|csv|jpg]')   { |x| @type = x.gsub(".", "") } # TODO: Mime gem to lookup and set vaild types
     end
   end
 end

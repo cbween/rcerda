@@ -94,7 +94,7 @@ class CbweenEdrAgent::FileAgentModifyTest < Minitest::Test
 
     assert_raises(CbweenEdrAgent::EdrAgent::EdrAgentFailure) do
       test_agent = CbweenEdrAgent::FileAgent.new(['-a', 'modify'] + @test_params)
-      agent.run
+      test_agent.run
     end
   end
 end
