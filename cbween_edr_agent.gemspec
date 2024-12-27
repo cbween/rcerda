@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "This gem can be installed and used to generate activity for EDR testing."
   spec.homepage = "https://github.com/cbween/"
   spec.required_ruby_version = ">= 3.1.0"
+  spec.license = nil
 
   spec.metadata["homepage_uri"] = spec.homepage
   # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."

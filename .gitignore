@@ -7,3 +7,5 @@
 /spec/reports/
 /tmp/
 *.log
+*.gem
+.DS_Store

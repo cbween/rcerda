@@ -1,52 +1,82 @@
-# CbweenEdrAgent
+# CbweenEdrAgent Tester
 
 Welcome to the EDR Agent Tester, it's purpose is to generate vairous telemetry and enabling the testing of an edr agent.
 
 
 ## Installation
-
-Install the gem and add to the application's Gemfile by executing:
+Checkout the gem, then install it locally like: 
 
 ```bash
-bin/setup
-chmod +x bin/cbween_edr_agent
-```
-
-Or run
-```bash
+gem build cbween_edr_agent.gemspec
+gem install ./cbween_edr_agent-0.1.0.gem
 bundle install
-chmod +x bin/cbween_edr_agent
-```
 
-### Use the process agent
-To get a list of commands for the process agent run:
+cbween_edr_agent -h
+```
+\
+To uninstall the gem run
 ```bash
-bin/cbween_edr_agent process -h
+gem uninstall cbween_edr_agent
 ```
-  - -n NAME, name of the process to run
-  - -a ARGUMENTS, arguments to pass onto the process
 
-e.g.
+## Agents
+The EDR Testing agent has various testing "agents" in /lib/cbween_edr_agent/agents/ than can be used to generate logs. Current testing agents are `file`, `process`, and `http`. 
+
+### Using the Process Agent
+The Process Agent will call out to an external process and execute a passed command.
+
+To get a list of command options for the process agent run:
 ```bash
-bin/cbween_edr_agent process -n ls -a "-alh"
+$ cbween_edr_agent process -h
+Usage: cbween_edr_agent process [OPTIONS]
+    -n, --name=NAME                  The name of a process to run
+    -a, --args=ARGS                  The arguments to pass on to the process
 ```
 
-### Use the file agent
+The script can then be used to run a process e.g.
 ```bash
-bin/cbween_edr_agent file -a [create|modify|delete] -n foo -p tmp -t txt
+cbween_edr_agent process -n ls -a "-alh"
+cbween_edr_agent process -n ping -a "-c 3 google.com"
 ```
-
-To get a list of commands for the file agent run:
+If your arguments contain no spaces.
 ```bash
-bin/cbween_edr_agent file -h
+cbween_edr_agent process -n ls -a -alh
 ```
 
-  - -a ACTION, the action to preform with a file.
-  - -n NAME, the name of a file
-  - -p PATH, the path to a file
-  - -t TYPE, the mime-type of a file
+### Using the File Agent
+The file agent will attempt to create a file of a given mine-type at the asked for path on the local machine. If a path is not passed, the file will be written to a temporary directory.
 
-TODO: Write usage instructions here for network agent
+To get a list of command options for the file agent run:
+```bash
+$ cbween_edr_agent file -h                             
+Usage: cbween_edr_agent file [OPTIONS]
+    -a, --action=ACTION              The action to take on a file.
+    -n, --name=NAME                  The name of a existing or new file.
+    -p, --path=PATH                  The path of a existing or new file.
+    -t, --type=TYPE                  The type of a new file to create. e.g. [txt|csv|jpg]
+```
+
+You may use the script with various actions on files like the line below to create the /tmp/foo.txt file
+```bash
+cbween_edr_agent file -a [create|modify|delete] -n foo -p /tmp -t txt
+```
+
+### Use the Http Agent
+
+
+```bash
+$ cbween_edr_agent http -h
+Usage: cbween_edr_agent http [OPTIONS]
+    -m, --method=METHOD              The method to take on a file.
+    -h, --host=HOST                  The host to preform the method on.
+    -d, --port=PORT                  The port to make a request to.
+    -p, --path=PATH                  The path of a request.
+```
+
+You may use the script to set GET requests via HTTP to various domains. e.g.
+```bash
+bin/cbween_edr_agent http -m get -h https://google.com -d 443 -p "?search=foobar"
+```
 
 ## Development
 
