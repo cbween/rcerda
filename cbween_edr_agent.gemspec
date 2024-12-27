@@ -13,7 +13,6 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.1.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = spec.homepage
   # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
 
   # Specify which files should be added to the gem when it is released.
@@ -31,9 +30,11 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "semantic_logger", "4.16.0"
   spec.add_dependency "fileutils", "0.7.2"
+  spec.add_dependency "httparty", "0.22.0"
   spec.add_dependency "etc", "1.4.5"
 
-  spec.add_development_dependency 'bundler'
-  spec.add_development_dependency "minitest", ">= 5.8"
-  spec.add_development_dependency "minitest-reporters", ">= 1.1"
+  spec.add_development_dependency 'bundler', "~> 2.6.1"
+  spec.add_development_dependency "minitest", "~> 5.8"
+  spec.add_development_dependency "minitest-reporters", "~> 1.1"
+  spec.add_development_dependency "webmock", "~> 3.24.0"
 end
