@@ -5,9 +5,10 @@ require "bundler/setup"
 require "cbween_edr_agent"
 require 'semantic_logger'
 
-SemanticLogger.default_level = :debug # TODO: ENV Vars
-SemanticLogger.add_appender(io: $stdout, formatter: :json)
-SemanticLogger.add_appender(file_name: "output.log", formatter: :json)
+app_name = $0.split("/").last
+SemanticLogger.default_level = :debug # TODO: ENV Var
+SemanticLogger.add_appender(io: $stdout, application: app_name, formatter: :json)
+SemanticLogger.add_appender(file_name: "output.log", application: app_name, formatter: :json)
 
 begin
   CbweenEdrAgent::EdrAgent.run

@@ -68,7 +68,7 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
   end
 
   def options
-    OptionParser.new("Usage: #{$0} #{self.class.command} [ OPTIONS]") do |parser|
+    OptionParser.new("Usage: #{$0} #{self.class.command} [OPTIONS]") do |parser|
       parser.on('-a', '--action=ACTION', String, 'The action to take on a file.')   { |x| @action = x }
       parser.on('-n', '--name=NAME', String, 'The name of a existing or new file.') { |x| @name = x }
       parser.on('-p', '--path=PATH', String, 'The path of a existing or new file.') { |x| @path = "#{x}" } # Should probably enforce the jail.
