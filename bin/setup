@@ -4,3 +4,4 @@ IFS=$'\n\t'
 set -vx
 
 bundle install
+chmod +x ./bin/cbween_edr_agent
