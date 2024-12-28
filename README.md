@@ -14,7 +14,7 @@ gem build cbween_edr_agent.gemspec
 gem install ./cbween_edr_agent-0.1.0.gem
 bundle install
 
-cbween_edr_agent -h
+edr_agent_tester -h
 ```
 
 To uninstall the gem run
@@ -32,20 +32,20 @@ The Process Agent will call out to an external process and execute a passed comm
 
 To get a list of command options for the process agent run:
 ```bash
-$ cbween_edr_agent process -h
-Usage: cbween_edr_agent process [OPTIONS]    
+$ edr_agent_tester process -h
+Usage: edr_agent_tester process [OPTIONS]    
     -n, --name=NAME                  The name of a process to run
     -a, --args=ARGS                  The arguments to pass on to the process
 ```
 
 The script can then be used to run a process e.g.
 ```bash
-cbween_edr_agent process -n ls -a "-alh"
-cbween_edr_agent process -n ping -a "-c 3 google.com"
+edr_agent_tester process -n ls -a "-alh"
+edr_agent_tester process -n ping -a "-c 3 google.com"
 ```
 If your arguments contain no spaces.
 ```bash
-cbween_edr_agent process -n ls -a -alh
+edr_agent_tester process -n ls -a -alh
 ```
 
 ### Using the File Agent
@@ -54,8 +54,8 @@ The file agent will attempt to create a file of a given mine-type at the asked f
 
 To get a list of command options for the file agent run:
 ```bash
-$ cbween_edr_agent file -h                             
-Usage: cbween_edr_agent file [OPTIONS]
+$ edr_agent_tester file -h                             
+Usage: edr_agent_tester file [OPTIONS]
     -a, --action=ACTION              The action to take on a file.
     -n, --name=NAME                  The name of a existing or new file.
     -p, --path=PATH                  The path of a existing or new file.
@@ -64,23 +64,23 @@ Usage: cbween_edr_agent file [OPTIONS]
 
 You may use the script with various actions on files like the line below to create the /tmp/foo.txt file
 ```bash
-cbween_edr_agent file -a [create|modify|delete] -n foo -p /tmp -t txt
+edr_agent_tester file -a [create|modify|delete] -n foo -p /tmp -t txt
 ```
 
 ### Use the Http Agent
 
 ```bash
-$ cbween_edr_agent http -h
-Usage: cbween_edr_agent http [OPTIONS]
+$ edr_agent_tester http -h
+Usage: edr_agent_tester http [OPTIONS]
     -m, --method=METHOD              The method to take on a file.
-    -u, --host=HOST                  The host to preform the method on.
-    -d, --port=PORT                  The port to make a request to.
-    -p, --path=PATH                  The path of a request.
+    -d, --domain=DOMAIN              The domain/host to preform the http method on.
+    -p, --port=PORT                  The port to make a request to.
+    -s, --subpath=SUBPATH            The path of a request.
 ```
 
 You may use the script to set GET requests via HTTP to various domains. e.g.
 ```bash
-bin/cbween_edr_agent http -m get -u https://google.com -d 443 -p "?search=foobar"
+edr_agent_tester http -m get -u https://google.com -d 443 -p "?search=foobar"
 ```
 
 ## Development

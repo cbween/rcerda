@@ -23,13 +23,13 @@ class CbweenEdrAgent::HttpAgent < CbweenEdrAgent::EdrAgent
     raise EdrAgentFailure.new("Method, Domain, and Port are required.") if @method.nil? || @host.nil? || @port.nil?
     self.send @method
   rescue => e
-    logger.error("Failed #{log_name}", log_payload, e)
-    raise EdrAgentFailure.new(e.message)
+   logger.error("Failed #{log_name}", log_payload, e)
+   raise EdrAgentFailure.new(e)
   end
 
   def get
     response = HTTParty.get(full_uri, headers: {}, logger: logger)
-    @log_payload[:content_length] = response.body.size
+    log_payload[:content_length] = response.body.nil? ? 0 : response.body.size
 
     response
   end
@@ -55,7 +55,7 @@ class CbweenEdrAgent::HttpAgent < CbweenEdrAgent::EdrAgent
       parser.on('-m', '--method=METHOD', 'The http method to take on a file.')   { |x| @method = x }
       parser.on('-d', '--domain=DOMAIN', 'The domain/host to preform the http method on.') { |x| @host = x }
       parser.on('-p', '--port=PORT', 'The port to make a request to.') { |x| @port = x }
-      parser.on('-s', '--path=PATH', 'The path of a request.') { |x| @path = x }
+      parser.on('-s', '--subpath=SUBPATH', 'The path of a request.') { |x| @path = x }
     end
   end
 end

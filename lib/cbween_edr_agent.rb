@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "cbween_edr_agent/version"
 require 'optparse'
 require 'semantic_logger'
 
 module CbweenEdrAgent
   class EdrAgent
-    attr_accessor :extra, :script_name
+    attr_accessor :extra
 
     include SemanticLogger::Loggable
   
@@ -54,16 +53,14 @@ module CbweenEdrAgent
           puts "Unrecognized command: #{command}"
           puts options
         else
-          @error = {}
           command_class = @commands.find { |k,c| c == command }.first
           command_handle = command_class.new(extra)
 
           logger.info "Initialize #{command_handle.log_name}", command_handle.log_payload
-          logger.measure_info(message: "Completed #{command_handle.log_name}", payload: command_handle.log_payload, error: @error) do
+          logger.measure_info(message: "Completed #{command_handle.log_name}", payload: command_handle.log_payload) do
             begin
               command_handle.run
             rescue => e
-              @error = e
               logger.error(e.message, error: e)
               raise EdrAgentFailure.new(e.message, command_handle.options.to_s)
             end

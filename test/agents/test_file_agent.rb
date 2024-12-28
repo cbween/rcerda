@@ -23,7 +23,6 @@ end
 class CbweenEdrAgent::FileAgentCreateTest < Minitest::Test
   def teardown
     File.delete @agent.file_uri if (@agent && File.exist?(@agent.file_uri))
-    FileUtils.remove_dir @agent.path if @agent.path != @agent.jail
     super
   end
 

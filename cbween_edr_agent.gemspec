@@ -25,8 +25,8 @@ Gem::Specification.new do |spec|
         f.start_with?(*%w[bin/ test/ spec/ features/ .git appveyor Gemfile])
     end
   end
-  # spec.bindir = "exe"
-  spec.executables = %w[cbween_edr_agent]
+
+  spec.executables = %w[edr_agent_tester]
   spec.require_paths = ["lib"]
 
   spec.add_dependency "semantic_logger", "4.16.0"
