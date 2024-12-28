@@ -10,13 +10,10 @@ class CbweenEdrAgent::ProcessAgent < CbweenEdrAgent::EdrAgent
   end
 
   def run
-    logger.info "Initialize #{log_name}", log_payload
-    logger.measure_info("Completed #{log_name}", log_payload) do
-      pid = Process.spawn "#{@name} #{@process_args}"
-      Process.waitpid(pid)
-    end
+    pid = Process.spawn "#{@name} #{@process_args}"
+    Process.waitpid(pid)
   rescue => e
-    logger.error "Failed #{log_name}", error_message: e.message
+    logger.error("Failed #{log_name}", log_payload, e)
     raise EdrAgentFailure.new(e.message)
   end
 
@@ -29,7 +26,7 @@ class CbweenEdrAgent::ProcessAgent < CbweenEdrAgent::EdrAgent
   end
 
   def options
-    OptionParser.new("Usage: #{$0} #{self.class.command} [OPTIONS]") do |parser|
+    OptionParser.new("Usage: #{script_name} #{self.class.command} [OPTIONS]") do |parser|
       parser.on('-n', '--name=NAME', String, 'The name of a process to run') { |x| @name = x }
       parser.on('-a', '--args=ARGS', String, 'The arguments to pass on to the process') { |x| @process_args = x }
     end

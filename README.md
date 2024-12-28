@@ -4,6 +4,9 @@ Welcome to the EDR Agent Tester, it's purpose is to generate vairous telemetry a
 
 
 ## Installation
+
+**Requires ruby >= 3.1.0**
+
 Checkout the gem, then install it locally like: 
 
 ```bash
@@ -13,22 +16,24 @@ bundle install
 
 cbween_edr_agent -h
 ```
-\
+
 To uninstall the gem run
 ```bash
 gem uninstall cbween_edr_agent
 ```
 
-## Agents
+## Using the different Agents
+
 The EDR Testing agent has various testing "agents" in /lib/cbween_edr_agent/agents/ than can be used to generate logs. Current testing agents are `file`, `process`, and `http`. 
 
 ### Using the Process Agent
+
 The Process Agent will call out to an external process and execute a passed command.
 
 To get a list of command options for the process agent run:
 ```bash
 $ cbween_edr_agent process -h
-Usage: cbween_edr_agent process [OPTIONS]
+Usage: cbween_edr_agent process [OPTIONS]    
     -n, --name=NAME                  The name of a process to run
     -a, --args=ARGS                  The arguments to pass on to the process
 ```
@@ -44,6 +49,7 @@ cbween_edr_agent process -n ls -a -alh
 ```
 
 ### Using the File Agent
+
 The file agent will attempt to create a file of a given mine-type at the asked for path on the local machine. If a path is not passed, the file will be written to a temporary directory.
 
 To get a list of command options for the file agent run:
@@ -63,19 +69,18 @@ cbween_edr_agent file -a [create|modify|delete] -n foo -p /tmp -t txt
 
 ### Use the Http Agent
 
-
 ```bash
 $ cbween_edr_agent http -h
 Usage: cbween_edr_agent http [OPTIONS]
     -m, --method=METHOD              The method to take on a file.
-    -h, --host=HOST                  The host to preform the method on.
+    -u, --host=HOST                  The host to preform the method on.
     -d, --port=PORT                  The port to make a request to.
     -p, --path=PATH                  The path of a request.
 ```
 
 You may use the script to set GET requests via HTTP to various domains. e.g.
 ```bash
-bin/cbween_edr_agent http -m get -h https://google.com -d 443 -p "?search=foobar"
+bin/cbween_edr_agent http -m get -u https://google.com -d 443 -p "?search=foobar"
 ```
 
 ## Development
