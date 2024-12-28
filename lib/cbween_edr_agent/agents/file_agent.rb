@@ -14,12 +14,10 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
   end
 
   def run
-    logger.info "Initialize #{log_name}", log_payload
-    logger.measure_info(message: "Completed #{log_name}", payload: log_payload) do
-      # TODO: Raise error if action not in list of ACTIONS
-      # TODO: Validate inputs
-      self.send @action
-    end
+    # TODO: Raise error if action not in list of ACTIONS
+    # TODO: Validate inputs
+    raise EdrAgentFailure.new("Action, Name and Type are required.") if @action.nil? || @name.nil? || @type.nil?
+    self.send @action
   rescue => e
     logger.error("Failed #{log_name}", log_payload, e)
     raise EdrAgentFailure.new(e.message)
@@ -51,10 +49,6 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
     @path ||= jail
   end
 
-  def log_payload
-    { file: file_uri }
-  end
-
   def file_uri
     "#{path}/#{name}.#{type}"
   end
@@ -67,8 +61,12 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
     "#{self.class.command.capitalize}##{@action}"
   end
 
+  def log_payload
+    { file: file_uri }
+  end
+
   def options
-    OptionParser.new("Usage: #{$0} #{self.class.command} [OPTIONS]") do |parser|
+    OptionParser.new("Usage: #{script_name} #{self.class.command} [OPTIONS]") do |parser|
       parser.on('-a', '--action=ACTION', String, 'The action to take on a file.')   { |x| @action = x }
       parser.on('-n', '--name=NAME', String, 'The name of a existing or new file.') { |x| @name = x }
       parser.on('-p', '--path=PATH', String, 'The path of a existing or new file.') { |x| @path = "#{x}" } # Should probably enforce the jail.

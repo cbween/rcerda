@@ -9,13 +9,13 @@ class CbweenEdrAgent::HttpAgentTest < Minitest::Test
   def setup
     super
     @test_url = 'https://example-pretend-tld.com'
-    @params = ['-m', 'get', '-h', @test_url, '-d', '443']
+    @params = ['-m', 'get', '-d', @test_url, '-p', '443']
   end
 
   def test_get_success_valid_params_http
     test_url = 'http://example-pretend-tld.com'
     stub_request(:get, test_url).to_return(status: 200)
-    params = ['-m', 'get', '-h', test_url, '-d', '80']
+    params = ['-m', 'get', '-d', test_url, '-p', '80']
   
     agent = CbweenEdrAgent::HttpAgent.new(params)
 

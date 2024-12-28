@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "cbween_edr_agent/version"
 require 'optparse'
 require 'semantic_logger'
 
@@ -18,42 +17,29 @@ module CbweenEdrAgent
       end
     end
     
-    def initialize(args)
+    def initialize(args = {})
       if Hash === args
         args.each do |k,v|
           instance_variable_set("@#{k}", v.to_s) if v
         end
       else
         @options = options do |opts|
-          # TODO Can use Trailing?
           opts.on('-h', 'Show this help') { raise EdrAgentFailure, opts.to_s }
-          # TODO: Provide Help
         end
-
-        @extra = @options.parse(args)
+        @extra = @options.parse(args)      
       end
     rescue OptionParser::ParseError => e
-      raise EdrAgentFailure.new(e.message, @options)
+      raise EdrAgentFailure.new(e.message, options.to_s)
     end
 
-    @commands = []
-    def self.inherited(subclass)
-      @commands << subclass
-    end
-    
-    def self.agents
-      Dir[File.expand_path(File.join(File.dirname(__FILE__), 'cbween_edr_agent/agents', '*.rb'))]
-    end
-
-    def self.run
+    def run
       SemanticLogger.tagged(system_username: Etc.getpwuid(Process.uid).name, process: $0) do
-        require_agents
-        @command_names = @commands.map { |c| c.command }
+        @commands = {}
+        EdrAgent.subclasses.each{ |k| @commands[k] = k.send 'command' }
         extra = []
 
         options = ARGV.options do |opts|
-          script_name = File.basename($0)
-          opts.banner = "Usage: #{script_name} [ #{@command_names.join(' | ')} ] [options]"
+          opts.banner = "Usage: #{script_name} [#{@commands.values.join('|')}] [options]"
           opts.separator("use '#{script_name} <command> -h' to see detailed command options")
           opts
         end
@@ -62,24 +48,30 @@ module CbweenEdrAgent
         command = extra.shift
 
         if command.nil?
-          STDERR.puts options
-        elsif !@command_names.include?(command)
-          STDERR.puts "Unrecognized command: #{command}"
-          STDERR.puts options
+          puts options
+        elsif false == @commands.values.include?(command)
+          puts "Unrecognized command: #{command}"
+          puts options
         else
-          command_class = @commands.find { |c| c.command == command }
-          command_class.new(extra).run
+          command_class = @commands.find { |k,c| c == command }.first
+          command_handle = command_class.new(extra)
+
+          logger.info "Initialize #{command_handle.log_name}", command_handle.log_payload
+          logger.measure_info(message: "Completed #{command_handle.log_name}", payload: command_handle.log_payload) do
+            begin
+              command_handle.run
+            rescue => e
+              logger.error(e.message, error: e)
+              raise EdrAgentFailure.new(e.message, command_handle.options.to_s)
+            end
+          end
+
         end
       end
-    rescue OptionParser::InvalidOption => e
-      logger.error(e.message, error: e)
-      raise EdrAgentFailure, e.message
     end
 
-    private
-
-    def self.require_agents
-      agents.each { |agent| require agent unless agent.nil? }
+    def script_name
+      File.basename($0)
     end
   end
 end
