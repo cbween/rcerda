@@ -12,6 +12,17 @@ class EdrAgentTester::HttpAgentTesterTest < Minitest::Test
     @params = ['-m', 'get', '-d', @test_url, '-p', '443']
   end
 
+  def test_log_name
+    assert_equal "Http#get", EdrAgentTester::HttpAgentTester.new(@params).log_name
+  end
+
+  def test_log_payload
+    expected_hash = { http_method: 'get', host: @test_url, port: "443", path: nil }
+
+    agent = EdrAgentTester::HttpAgentTester.new(@params)
+    assert_equal expected_hash, agent.log_payload
+  end
+
   def test_get_success_valid_params_http
     test_url = 'http://example-pretend-tld.com'
     stub_request(:get, test_url).to_return(status: 200)

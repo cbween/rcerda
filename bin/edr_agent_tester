@@ -15,7 +15,7 @@ begin
   testing_agent = EdrAgentTester::EdrAgentTester.new
   testing_agent.run
 rescue EdrAgentTester::EdrAgentTester::EdrAgentTesterFailure => e
-  STDERR.puts e.message
-  STDERR.puts e.options if e.options
+  puts e.message
+  puts e.options if e.options
   exit(1)
 end

@@ -18,15 +18,12 @@ module EdrAgentTester
     end
     
     def initialize(args = {})
-      if Hash === args
+      if Hash == args
         args.each do |k,v|
           instance_variable_set("@#{k}", v.to_s) if v
         end
       else
-        @options = options do |opts|
-          opts.on('-h', 'Show this help') { raise EdrAgentTesterFailure, opts.to_s }
-        end
-        @extra = @options.parse(args)      
+        @extra = options.parse(args)      
       end
     rescue OptionParser::ParseError => e
       raise EdrAgentTesterFailure.new(e.message, options.to_s)
@@ -35,7 +32,7 @@ module EdrAgentTester
     def run
       SemanticLogger.tagged(system_username: Etc.getpwuid(Process.uid).name, process: $0) do
         @commands = {}
-        EdrAgent.subclasses.each{ |k| @commands[k] = k.send 'command' }
+        EdrAgentTester.subclasses.each{ |k| @commands[k] = k.send 'command' }
         extra = []
 
         options = ARGV.options do |opts|
@@ -65,7 +62,6 @@ module EdrAgentTester
               raise EdrAgentTesterFailure.new(e.message, command_handle.options.to_s)
             end
           end
-
         end
       end
     end

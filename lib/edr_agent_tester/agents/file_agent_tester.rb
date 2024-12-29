@@ -24,7 +24,7 @@ class EdrAgentTester::FileAgentTester < EdrAgentTester::EdrAgentTester
   end
 
   def create
-    if Dir.exist?(path) == false
+    if false == Dir.exist?(path)
       logger.debug("creating nonexistent path for file", path: path)
       FileUtils.mkdir_p path
     end
