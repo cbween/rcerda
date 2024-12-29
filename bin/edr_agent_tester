@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "bundler/setup"
-require "edr_agent_tester"
+require 'bundler/setup'
+require 'edr_agent_tester'
 require 'semantic_logger'
 
-Dir[File.expand_path('../lib/edr_agent_tester/**/*', __dir__)].each {|d| require d unless File.directory? d }
+Dir[File.expand_path('../lib/edr_agent_tester/**/*', __dir__)].each { |d| require d unless File.directory? d }
 
-app_name = $0.split("/").last
+app_name = $PROGRAM_NAME.split('/').last
 SemanticLogger.default_level = :debug # TODO: ENV Var
-SemanticLogger.add_appender(file_name: "output.log", application: app_name, formatter: :json)
+SemanticLogger.add_appender(file_name: 'output.log', application: app_name, formatter: :json)
 
 begin
   testing_agent = EdrAgentTester::EdrAgentTester.new

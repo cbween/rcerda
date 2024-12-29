@@ -8,32 +8,32 @@ module EdrAgentTester
     attr_accessor :extra
 
     include SemanticLogger::Loggable
-  
+
     class EdrAgentTesterFailure < StandardError
       attr_reader :options
+
       def initialize(message, opt_parser = nil)
         super(message)
         @options = opt_parser
       end
     end
-    
+
     def initialize(args = {})
-      if Hash == args
-        args.each do |k,v|
+      if args == Hash
+        args.each do |k, v|
           instance_variable_set("@#{k}", v.to_s) if v
         end
       else
-        @extra = options.parse(args)      
+        @extra = options.parse(args)
       end
     rescue OptionParser::ParseError => e
       raise EdrAgentTesterFailure.new(e.message, options.to_s)
     end
 
     def run
-      SemanticLogger.tagged(system_username: Etc.getpwuid(Process.uid).name, process: $0) do
+      SemanticLogger.tagged(system_username: Etc.getpwuid(Process.uid).name, process: $PROGRAM_NAME) do
         @commands = {}
-        EdrAgentTester.subclasses.each{ |k| @commands[k] = k.send 'command' }
-        extra = []
+        EdrAgentTester.subclasses.each { |k| @commands[k] = k.send 'command' }
 
         options = ARGV.options do |opts|
           opts.banner = "Usage: #{script_name} [#{@commands.values.join('|')}] [options]"
@@ -46,28 +46,26 @@ module EdrAgentTester
 
         if command.nil?
           puts options
-        elsif false == @commands.values.include?(command)
+        elsif @commands.values.include?(command) == false
           puts "Unrecognized command: #{command}"
           puts options
         else
-          command_class = @commands.find { |k,c| c == command }.first
+          command_class = @commands.find { |_k, c| c == command }.first
           command_handle = command_class.new(extra)
 
           logger.info "Initialize #{command_handle.log_name}", command_handle.log_payload
           logger.measure_info(message: "Completed #{command_handle.log_name}", payload: command_handle.log_payload) do
-            begin
-              command_handle.run
-            rescue => e
-              logger.error(e.message, error: e)
-              raise EdrAgentTesterFailure.new(e.message, command_handle.options.to_s)
-            end
+            command_handle.run
+          rescue StandardError => e
+            logger.error(e.message, error: e)
+            raise EdrAgentTesterFailure.new(e.message, command_handle.options.to_s)
           end
         end
       end
     end
 
     def script_name
-      File.basename($0)
+      File.basename($PROGRAM_NAME)
     end
   end
 end
