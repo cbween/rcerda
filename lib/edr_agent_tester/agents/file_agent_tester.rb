@@ -74,6 +74,7 @@ module EdrAgentTester
         parser.on('-p', '--path=PATH', String, 'The path of a existing or new file.') { |x|@path = x }
         # TODO: Mime gem to lookup and set vaild types
         parser.on('-t', '--type=TYPE', String, 'The type of a new file to create. e.g. [txt|csv|jpg]') { |x| @type = x.gsub('.', '') }
+      end
     end
   end
 end

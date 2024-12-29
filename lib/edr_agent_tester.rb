@@ -19,15 +19,18 @@ module EdrAgentTester
     end
 
     def initialize(args = {})
-      if args == Hash
-        args.each do |k, v|
+      if Hash === args
+        args.each do |k,v|
           instance_variable_set("@#{k}", v.to_s) if v
         end
       else
-        @extra = options.parse(args)
+        @options = options do |opts|
+          opts.on('-h', 'Show this help') { raise EdrAgentFailure, opts.to_s }
+        end
+        @extra = @options.parse(args)      
       end
     rescue OptionParser::ParseError => e
-      raise EdrAgentTesterFailure.new(e.message, options.to_s)
+      raise EdrAgentFailure.new(e.message, options.to_s)
     end
 
     def run
