@@ -2,8 +2,8 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'edr_agent_tester'
 require 'semantic_logger'
+require 'edr_agent_tester'
 
 Dir[File.expand_path('../lib/edr_agent_tester/**/*', __dir__)].each { |d| require d unless File.directory? d }
 

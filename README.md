@@ -83,6 +83,28 @@ You may use the script to set GET requests via HTTP to various domains. e.g.
 edr_agent_tester http -m get -d https://google.com -p 443 -s "?search=foobar"
 ```
 
+# Testing linux with Docker
+
+Build a container with the gem installed with docker:
+```bash
+docker build -t erdtestagent .    
+```
+
+exec into the docker container's shell like:
+```bash
+docker run -ti erdtestagent "/bin/bash"
+```
+
+Try out some commands:
+```bash
+edr_agent_tester process -n ls -a "-alh"
+```
+
+View the log
+```bash
+less output.log
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
