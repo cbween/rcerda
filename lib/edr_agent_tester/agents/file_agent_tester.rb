@@ -2,7 +2,7 @@
 
 require "fileutils"
 
-class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
+class EdrAgentTester::FileAgentTester < EdrAgentTester::EdrAgentTester
   ACTIONS = %w(create modify delete)
 
   attr_reader :action, :name, :type
@@ -16,11 +16,11 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
   def run
     # TODO: Raise error if action not in list of ACTIONS
     # TODO: Validate inputs
-    raise EdrAgentFailure.new("Action, Name and Type are required.") if @action.nil? || @name.nil? || @type.nil?
+    raise EdrAgentTesterFailure.new("Action, Name and Type are required.") if @action.nil? || @name.nil? || @type.nil?
     self.send @action
   rescue => e
     logger.error("Failed #{log_name}", log_payload, e)
-    raise EdrAgentFailure.new(e.message)
+    raise EdrAgentTesterFailure.new(e.message)
   end
 
   def create
@@ -37,7 +37,7 @@ class CbweenEdrAgent::FileAgent < CbweenEdrAgent::EdrAgent
   end
 
   def modify
-    raise EdrAgentFailure.new "The file #{file_uri} does not exist" unless File.exist? file_uri
+    raise EdrAgentTesterFailure.new "The file #{file_uri} does not exist" unless File.exist? file_uri
     FileUtils.touch file_uri
   end
 

@@ -2,7 +2,7 @@
 
 require 'httparty'
 
-class CbweenEdrAgent::HttpAgent < CbweenEdrAgent::EdrAgent
+class EdrAgentTester::HttpAgentTester < EdrAgentTester::EdrAgentTester
   # TODO: More methods.
   METHODS = %w(get)
   PORTS = %w(80 443)
@@ -20,11 +20,11 @@ class CbweenEdrAgent::HttpAgent < CbweenEdrAgent::EdrAgent
     # TODO: Raise error if method not in list of methods
     # TODO: Raise error if port not in list of ports
     # TODO: Validate other inputs
-    raise EdrAgentFailure.new("Method, Domain, and Port are required.") if @method.nil? || @host.nil? || @port.nil?
+    raise EdrAgentTesterFailure.new("Method, Domain, and Port are required.") if @method.nil? || @host.nil? || @port.nil?
     self.send @method
   rescue => e
    logger.error("Failed #{log_name}", log_payload, e)
-   raise EdrAgentFailure.new(e)
+   raise EdrAgentTesterFailure.new(e)
   end
 
   def get

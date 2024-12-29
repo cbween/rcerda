@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CbweenEdrAgent::ProcessAgent < CbweenEdrAgent::EdrAgent
+class EdrAgentTester::ProcessAgentTester < EdrAgentTester::EdrAgentTester
   attr_accessor :host, :port
 
   def self.command; 'process'; end
@@ -14,7 +14,7 @@ class CbweenEdrAgent::ProcessAgent < CbweenEdrAgent::EdrAgent
     Process.waitpid(pid)
   rescue => e
     logger.error("Failed #{log_name}", log_payload, e)
-    raise EdrAgentFailure.new(e.message)
+    raise EdrAgentTesterFailure.new(e.message)
   end
 
   def log_name

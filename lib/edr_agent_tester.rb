@@ -3,13 +3,13 @@
 require 'optparse'
 require 'semantic_logger'
 
-module CbweenEdrAgent
-  class EdrAgent
+module EdrAgentTester
+  class EdrAgentTester
     attr_accessor :extra
 
     include SemanticLogger::Loggable
   
-    class EdrAgentFailure < StandardError
+    class EdrAgentTesterFailure < StandardError
       attr_reader :options
       def initialize(message, opt_parser = nil)
         super(message)
@@ -24,12 +24,12 @@ module CbweenEdrAgent
         end
       else
         @options = options do |opts|
-          opts.on('-h', 'Show this help') { raise EdrAgentFailure, opts.to_s }
+          opts.on('-h', 'Show this help') { raise EdrAgentTesterFailure, opts.to_s }
         end
         @extra = @options.parse(args)      
       end
     rescue OptionParser::ParseError => e
-      raise EdrAgentFailure.new(e.message, options.to_s)
+      raise EdrAgentTesterFailure.new(e.message, options.to_s)
     end
 
     def run
@@ -62,7 +62,7 @@ module CbweenEdrAgent
               command_handle.run
             rescue => e
               logger.error(e.message, error: e)
-              raise EdrAgentFailure.new(e.message, command_handle.options.to_s)
+              raise EdrAgentTesterFailure.new(e.message, command_handle.options.to_s)
             end
           end
 

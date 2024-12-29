@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "cbween_edr_agent"
-require "cbween_edr_agent/agents/http_agent"
+require "edr_agent_tester"
+require "edr_agent_tester/agents/http_agent_tester"
 
-class CbweenEdrAgent::HttpAgentTest < Minitest::Test
+class EdrAgentTester::HttpAgentTesterTest < Minitest::Test
 
   def setup
     super
@@ -17,7 +17,7 @@ class CbweenEdrAgent::HttpAgentTest < Minitest::Test
     stub_request(:get, test_url).to_return(status: 200)
     params = ['-m', 'get', '-d', test_url, '-p', '80']
   
-    agent = CbweenEdrAgent::HttpAgent.new(params)
+    agent = EdrAgentTester::HttpAgentTester.new(params)
 
     response = agent.run
     assert_equal Net::HTTPOK, response.response.class
@@ -25,7 +25,7 @@ class CbweenEdrAgent::HttpAgentTest < Minitest::Test
 
   def test_get_success_valid_params_https
     stub_request(:get, @test_url).to_return(status: 200)
-    agent = CbweenEdrAgent::HttpAgent.new(@params)
+    agent = EdrAgentTester::HttpAgentTester.new(@params)
 
     response = agent.run
     assert_equal Net::HTTPOK, response.response.class
@@ -33,7 +33,7 @@ class CbweenEdrAgent::HttpAgentTest < Minitest::Test
 
   def test_get_client_error
     stub_request(:get, @test_url).to_return(status: 400)
-    agent = CbweenEdrAgent::HttpAgent.new(@params)
+    agent = EdrAgentTester::HttpAgentTester.new(@params)
 
     response = agent.run
     assert_equal Net::HTTPBadRequest, response.response.class
@@ -41,7 +41,7 @@ class CbweenEdrAgent::HttpAgentTest < Minitest::Test
 
   def test_get_server_error
     stub_request(:get, @test_url).to_return(status: 500)
-    agent = CbweenEdrAgent::HttpAgent.new(@params)
+    agent = EdrAgentTester::HttpAgentTester.new(@params)
 
     response = agent.run
     assert_equal Net::HTTPInternalServerError, response.response.class
