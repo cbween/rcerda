@@ -23,32 +23,25 @@ module EdrAgentTester
         args.each do |k,v|
           instance_variable_set("@#{k}", v.to_s) if v
         end
+      else
+        @extra = options.parse(args)
       end
-    rescue StandardError => e
-      raise EdrAgentFailure.new(e.message)
+    rescue OptionParser::ParseError => e
+      raise EdrAgentFailure.new(e.message, options.to_s)
     end
 
     def run
       SemanticLogger.tagged(system_username: Etc.getpwuid(Process.uid).name, process: $PROGRAM_NAME) do
-        @commands = {}
-        EdrAgentTester.subclasses.each { |k| @commands[k] = k.send 'command' }
-
-        options = ARGV.options do |opts|
-          opts.banner = "Usage: #{script_name} [#{@commands.values.join('|')}] [options]"
-          opts.separator("use '#{script_name} <command> -h' to see detailed command options")
-          opts
-        end
-
         extra = options.order!
         command = extra.shift
 
         if command.nil?
           puts options
-        elsif @commands.values.include?(command) == false
+        elsif commands.values.include?(command) == false
           puts "Unrecognized command: #{command}"
           puts options
         else
-          command_class = @commands.find { |_k, c| c == command }.first
+          command_class = commands.find { |_k, c| c == command }.first
           command_handle = command_class.new(extra)
 
           logger.info "Initialize #{command_handle.log_name}", command_handle.log_payload
@@ -59,6 +52,20 @@ module EdrAgentTester
             raise EdrAgentTesterFailure.new(e.message, command_handle.options.to_s)
           end
         end
+      end
+    end
+
+    def commands
+      @commands ||= {}
+      EdrAgentTester.subclasses.each { |k| @commands[k] = k.send 'command' } if @commands.empty?
+      @commands
+    end
+
+    def options
+      OptionParser.new do |parser|
+        parser.banner = "Usage: #{script_name} [#{commands.values.join('|')}] [options]"
+        parser.separator("use '#{script_name} <command> -h' to see detailed command options")
+        parser
       end
     end
 
