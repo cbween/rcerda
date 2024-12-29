@@ -11,7 +11,7 @@ module EdrAgentTester
     end
 
     def run
-      pid = Process.spawn "#{@name} #{@process_args}"
+      pid = Process.spawn "#{@name} #{@args}"
       Process.waitpid(pid)
     rescue StandardError => e
       logger.error("Failed #{log_name}", log_payload, e)
@@ -23,13 +23,13 @@ module EdrAgentTester
     end
 
     def log_payload
-      { name: @name, arguments: @process_args }
+      { name: @name, arguments: @args }
     end
 
     def options
       OptionParser.new("Usage: #{script_name} #{self.class.command} [OPTIONS]") do |parser|
         parser.on('-n', '--name=NAME', String, 'The name of a process to run') { |x| @name = x }
-        parser.on('-a', '--args=ARGS', String, 'The arguments to pass on to the process') { |x| @process_args = x }
+        parser.on('-a', '--args=ARGS', String, 'The arguments to pass on to the process') { |x| @args = x }
       end
     end
   end
