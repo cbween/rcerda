@@ -49,7 +49,7 @@ module EdrAgentTester
     end
 
     def log_payload
-      @log_payload ||= { http_method: @method, host: @host, port: @port, path: @path }
+      @log_payload ||= { http_method: @method, host: @host, port: @port.to_i, path: @path }
     end
 
     def options
