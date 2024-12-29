@@ -1,33 +1,33 @@
 # frozen_string_literal: true
 
-require "test_helper"
-require "edr_agent_tester"
-require "edr_agent_tester/agents/file_agent_tester"
+require 'test_helper'
+require 'edr_agent_tester'
+require 'edr_agent_tester/agents/file_agent_tester'
 
 class EdrAgentTester::FileAgentTesterTest < Minitest::Test
   def test_log_name
-    assert_equal "File#create", EdrAgentTester::FileAgentTester.new(%w(-a create -n test_file -t txt)).log_name
-    assert_equal "File#modify", EdrAgentTester::FileAgentTester.new(%w(-a modify -n test_file -t txt)).log_name
-    assert_equal "File#delete", EdrAgentTester::FileAgentTester.new(%w(-a delete -n test_file -t txt)).log_name
+    assert_equal 'File#create', EdrAgentTester::FileAgentTester.new(%w[-a create -n test_file -t txt]).log_name
+    assert_equal 'File#modify', EdrAgentTester::FileAgentTester.new(%w[-a modify -n test_file -t txt]).log_name
+    assert_equal 'File#delete', EdrAgentTester::FileAgentTester.new(%w[-a delete -n test_file -t txt]).log_name
   end
 
   def test_log_payload
     path = File.expand_path('../../tmp/', __dir__)
-    expected_hash =  { file: "#{path}/test_file.txt" }
+    expected_hash = { file: "#{path}/test_file.txt" }
 
-    agent = EdrAgentTester::FileAgentTester.new(%w(-a create -n test_file -t txt))
+    agent = EdrAgentTester::FileAgentTester.new(%w[-a create -n test_file -t txt])
     assert_equal expected_hash, agent.log_payload
   end
 end
 
 class EdrAgentTester::FileAgentCreateTest < Minitest::Test
   def teardown
-    File.delete @agent.file_uri if (@agent && File.exist?(@agent.file_uri))
+    File.delete @agent.file_uri if @agent && File.exist?(@agent.file_uri)
     super
   end
 
   def test_create_sucess_with_expected_params
-    params = %w(-a create -n test_file -t txt)
+    params = %w[-a create -n test_file -t txt]
     @agent = EdrAgentTester::FileAgentTester.new(params)
 
     File.delete @agent.file_uri if File.exist? @agent.file_uri
@@ -38,7 +38,7 @@ class EdrAgentTester::FileAgentCreateTest < Minitest::Test
   end
 
   def test_create_success_sub_dir_not_exists
-    params = %w(-a create -n test_file -p test -t txt)
+    params = %w[-a create -n test_file -p test -t txt]
     @agent = EdrAgentTester::FileAgentTester.new(params)
 
     File.delete @agent.file_uri if File.exist? @agent.file_uri
@@ -49,7 +49,7 @@ class EdrAgentTester::FileAgentCreateTest < Minitest::Test
   end
 
   def test_create_fails_file_existed
-    params = %w(-a create -n test_file -t txt)
+    params = %w[-a create -n test_file -t txt]
     @agent = EdrAgentTester::FileAgentTester.new(params)
 
     File.delete @agent.file_uri if File.exist? @agent.file_uri
@@ -67,7 +67,7 @@ end
 class EdrAgentTester::FileAgentModifyTest < Minitest::Test
   def setup
     super
-    @test_params = %w(-n test_file -t json)
+    @test_params = %w[-n test_file -t json]
     agent = EdrAgentTester::FileAgentTester.new(['-a', 'create'] + @test_params)
     agent.create unless File.exist? agent.file_uri
   end
@@ -101,7 +101,7 @@ end
 class EdrAgentTester::FileAgentDeleteTest < Minitest::Test
   def setup
     super
-    @test_params = %w(-n test_file -t json)
+    @test_params = %w[-n test_file -t json]
     agent = EdrAgentTester::FileAgentTester.new(['-a', 'create'] + @test_params)
     agent.create unless File.exist? agent.file_uri
   end
