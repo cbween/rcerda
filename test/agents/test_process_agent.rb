@@ -15,7 +15,7 @@ class EdrAgentTester::ProcessAgentTesterTest < Minitest::Test
   end
 
   def test_log_payload
-    expected_hash = { name: 'ls', arguments: '-alh' }
+    expected_hash = { process_name: 'ls', arguments: '-alh' }
     agent = EdrAgentTester::ProcessAgentTester.new(@test_params)
     assert_equal expected_hash, agent.log_payload
   end

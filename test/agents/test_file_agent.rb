@@ -13,7 +13,7 @@ class EdrAgentTester::FileAgentTesterTest < Minitest::Test
 
   def test_log_payload
     path = File.expand_path('../../tmp/', __dir__)
-    expected_hash = { file: "#{path}/test_file.txt" }
+    expected_hash = { action: 'create', file: "#{path}/test_file.txt" }
 
     agent = EdrAgentTester::FileAgentTester.new({ action: 'create', name: 'test_file', type: 'txt' })
     assert_equal expected_hash, agent.log_payload

@@ -52,7 +52,7 @@ module EdrAgentTester
     end
 
     def file_uri
-      "#{path}/#{name}.#{type}"
+      File.expand_path "#{path}/#{name}.#{type}"
     end
 
     def jail
@@ -64,7 +64,7 @@ module EdrAgentTester
     end
 
     def log_payload
-      { file: file_uri }
+      { action: @action, file: file_uri }
     end
 
     def options

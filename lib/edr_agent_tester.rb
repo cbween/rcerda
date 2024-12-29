@@ -27,20 +27,20 @@ module EdrAgentTester
         @extra = options.parse(args)
       end
     rescue OptionParser::ParseError => e
-      raise EdrAgentFailure.new(e.message, options.to_s)
+      raise EdrAgentTesterFailure.new(e.message, options.to_s)
     end
 
     def run
-      SemanticLogger.tagged(system_username: Etc.getpwuid(Process.uid).name, process: $PROGRAM_NAME) do
-        extra = options.order!
-        command = extra.shift
+      extra = options.order!
+      command = extra.shift
 
-        if command.nil?
-          puts options
-        elsif commands.values.include?(command) == false
-          puts "Unrecognized command: #{command}"
-          puts options
-        else
+      if command.nil?
+        puts options
+      elsif commands.values.include?(command) == false
+        puts "Unrecognized command: #{command}"
+        puts options
+      else
+        SemanticLogger.tagged(system_username: Etc.getpwuid(Process.uid).name, process: $PROGRAM_NAME, command_given: ([command] + extra)) do
           command_class = commands.find { |_k, c| c == command }.first
           command_handle = command_class.new(extra)
 

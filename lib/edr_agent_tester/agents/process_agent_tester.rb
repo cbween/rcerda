@@ -12,6 +12,8 @@ module EdrAgentTester
 
     def run
       pid = Process.spawn "#{@name} #{@args}"
+      log_payload[:process_id] = pid
+
       Process.waitpid(pid)
     rescue StandardError => e
       logger.error("Failed #{log_name}", log_payload, e)
@@ -23,7 +25,7 @@ module EdrAgentTester
     end
 
     def log_payload
-      { name: @name, arguments: @args }
+      @log_payload ||= { process_name: @name, arguments: @args }
     end
 
     def options
