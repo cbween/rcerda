@@ -80,7 +80,7 @@ Usage: edr_agent_tester http [OPTIONS]
 
 You may use the script to set GET requests via HTTP to various domains. e.g.
 ```bash
-edr_agent_tester http -m get -u https://google.com -d 443 -p "?search=foobar"
+edr_agent_tester http -m get -d https://google.com -p 443 -s "?search=foobar"
 ```
 
 ## Development
