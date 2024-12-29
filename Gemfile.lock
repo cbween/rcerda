@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cbween_edr_agent (0.1.0)
+    edr_agent_tester (0.1.0)
       etc (= 1.4.5)
       fileutils (= 0.7.2)
       httparty (= 0.22.0)
@@ -53,7 +53,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.6.1)
-  cbween_edr_agent!
+  edr_agent_tester!
   minitest (~> 5.16)
   minitest-reporters (~> 1.1)
   rake (~> 13.0)

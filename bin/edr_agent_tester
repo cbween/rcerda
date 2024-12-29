@@ -2,18 +2,19 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "cbween_edr_agent"
+require "edr_agent_tester"
 require 'semantic_logger'
-Dir[File.expand_path('../lib/cbween_edr_agent/**/*', __dir__)].each {|d| require d unless File.directory? d }
+
+Dir[File.expand_path('../lib/edr_agent_tester/**/*', __dir__)].each {|d| require d unless File.directory? d }
 
 app_name = $0.split("/").last
 SemanticLogger.default_level = :debug # TODO: ENV Var
 SemanticLogger.add_appender(file_name: "output.log", application: app_name, formatter: :json)
 
 begin
-  testing_agent = CbweenEdrAgent::EdrAgent.new
+  testing_agent = EdrAgentTester::EdrAgentTester.new
   testing_agent.run
-rescue CbweenEdrAgent::EdrAgent::EdrAgentFailure => e
+rescue EdrAgentTester::EdrAgentTester::EdrAgentTesterFailure => e
   STDERR.puts e.message
   STDERR.puts e.options if e.options
   exit(1)

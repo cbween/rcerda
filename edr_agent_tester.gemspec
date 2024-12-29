@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
-require_relative "lib/cbween_edr_agent/version"
+require_relative "lib/edr_agent_tester/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "cbween_edr_agent"
-  spec.version = CbweenEdrAgent::VERSION
+  spec.name = "edr_agent_tester"
+  spec.version = EdrAgentTester::VERSION
   spec.authors = ["Chris Breen"]
   spec.email = ["chris@chrisbreen.dev"]
 
   spec.summary = "This gem can be installed and used to generate activity for EDR testing."
-  spec.homepage = "https://github.com/cbween/"
+  spec.homepage = "https://github.com/cbween/rcerda"
   spec.required_ruby_version = ">= 3.1.0"
   spec.license = nil
-
   spec.metadata["homepage_uri"] = spec.homepage
-  # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
